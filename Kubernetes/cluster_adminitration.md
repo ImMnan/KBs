@@ -151,3 +151,42 @@ ETCDCTL_API=3 etcdctl --write-out=table snapshot restore etcd_backup.db \
 --key=/etc/kubernetes/pki/etcd/server.key \
 --cacert=/etc/kubernetes/pki/etcd/ca.crt
 ```
+
+## Upgrading Kubernetes Cluster
+
+> Verifying the current version of Kubernetes
+
+```
+kubeadm version
+kubectl get nodes
+```
+
+> Upgrading the repositories
+```
+sudo apt update
+sudo apt upgrade
+```
+If using a RedHat based system, with dnf manager:
+```
+sudo dnf update
+sudo dnf upgrade
+```
+
+> Holding the Kubernetes versions
+```
+sudo apt-mark hold kubeadm
+sudo apt-mark hold kubelet kubectl
+```
+
+> Upgrading the control plane(Master)
+```
+sudo apt-get install -y kubeadm=1.23.12-00 --allow-change-held-packages
+sudo apt-get install -y kubelet=1.23.12-00 kubectl=1.23.12-00 --allow-change-held-packages
+```
+
+> Verifying the updated version of Kubernetes
+```
+kubeadm version
+kubectl get nodes
+sudo kubeadm upgrade plan
+```
