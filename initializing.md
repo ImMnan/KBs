@@ -30,72 +30,25 @@ For example:
 If the default number of IP addresses per worker node is 256, then where does the recommended number of 100 pods per worker come from?
 * Because Kubernetes (by default) will never delete an old replica pod until the new replica pod is ready. In the meantime there will always be two replica pods running at the same time (until the new one is ready and the old one is deleted).
 
-## Kubernetes installation procedure
-1. Check that Kubernetes components are already installed:
-    ```
-    service kubelet status
-    which kubeadm
-    which kubectl
-    ls /etc/kubernetes/manifests/
-    ```
-1. Remove any previous Kubernetes initialization:    
-    ```
-    sudo kubeadm reset --force
-    ```
-1. Initialize Kubernetes:
-
-    ```   
-    sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --ignore-preflight-errors all 2>& 1 | tee kubeadm-init.log
-    ```
-1. Check the static pods that have been created for the Control Plane:
-    ```    
-    ls /etc/kubernetes/manifests/
-    ls -l /etc/kubernetes/admin.conf
-    ```
-1. Execute the following commands to avoid the need of running Kubernetes commands as root:
-    ```
-    mkdir -p ${HOME}/.kube
-    sudo cp /etc/kubernetes/admin.conf ${HOME}/.kube/config
-    sudo chown -R $( id -u ):$( id -g ) ${HOME}/.kube/
-    echo 'source <(kubectl completion bash)' | tee --append ${HOME}/.bashrc
-    source ${HOME}/.bashrc
-    ```
-1. Deploy a network:    
-    ```
-    kubectl apply --filename https://docs.projectcalico.org/v3.21/manifests/calico.yaml
-    watch kubectl get no
-    ```
-1. Create a token to add more workers to the cluster:    
-    ```
-    sudo kubeadm token create --print-join-command
-    ```
-1. Test the installation:    
-    ```
-    watch kubectl get no
-    kubectl run test --image docker.io/library/nginx:alpine
-    kubectl get po --output wide
-    kubectl describe po
-    kubectl get po --output yaml
-    kubectl logs test
-    kubectl get po/test --output yaml | tee po.yaml
-    ```
 
 ## Kubernetes Architecture
 
-> Master
-    API Server
-    Scheduler
-    Controller Manager
-    Cloud Controller Manager(CCM)
-    Etcd
+> Master Node
 
-> Worker
-    Kubelet <-> Dockerd
-    Kube-proxy
-Pods - Containers - App running
-Operator - Access API-Server for k8s calls - Create, Update, Read, Delete resources
-K8s client - UI, API, CLI - kubectl
-User - App users - Access App deployed in k8s
+- API Server
+- Scheduler
+- Controller Manager
+- Cloud Controller Manager(CCM)
+- Etcd
+
+> Worker Nodes
+- Kubelet <-> Dockerd
+- Kube-proxy
+- Pods - Containers - App running
+- Operator - Access API-Server for k8s calls - Create, Update, Read, Delete resources
+- K8s client - UI, API, CLI - kubectl
+- User - App users - Access App deployed in k8s
+
 
 
 ## Docker Configuration - Master & worker nodes
@@ -126,3 +79,49 @@ sudo systemctl restart docker
 sudo swapoff -a
 ```
 
+
+## Kubernetes installation procedure
+1. Check that Kubernetes components are already installed:
+    ```
+    service kubelet status
+    which kubeadm
+    which kubectl
+    ls /etc/kubernetes/manifests/
+    ```
+
+2. Remove any previous Kubernetes initialization:    
+    ```
+    sudo kubeadm reset --force
+    ```
+
+3. Initialize Kubernetes:
+
+    ```   
+    sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --ignore-preflight-errors all 2>& 1 | tee kubeadm-init.log
+    ```
+
+4. Check the static pods that have been created for the Control Plane:
+    ```    
+    ls /etc/kubernetes/manifests/
+    ls -l /etc/kubernetes/admin.conf
+    ```
+
+5. Execute the following commands to avoid the need of running Kubernetes commands as root:
+    ```
+    mkdir -p ${HOME}/.kube
+    sudo cp /etc/kubernetes/admin.conf ${HOME}/.kube/config
+    sudo chown -R $( id -u ):$( id -g ) ${HOME}/.kube/
+    echo 'source <(kubectl completion bash)' | tee --append ${HOME}/.bashrc
+    source ${HOME}/.bashrc
+    ```
+
+6. Deploy a network:    
+    ```
+    kubectl apply --filename https://docs.projectcalico.org/v3.21/manifests/calico.yaml
+    kubectl get no -o wide w 
+    ```
+
+7. Create a token to add more workers to the cluster:    
+    ```
+    sudo kubeadm token create --print-join-command
+    ```
