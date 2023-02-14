@@ -48,7 +48,11 @@ If the default number of IP addresses per worker node is 256, then where does th
 - K8s client - UI, API, CLI - kubectl
 - User - App users - Access App deployed in k8s
 
-
+Kubelet is a daemon and kub-proxy is a container running on every node in Kubernetes cluster. 
+Kube-proxy will configure the network as seen in the following iptables:
+```
+sudo iptables -S -t nat | grep KUBE
+```
 
 ## Docker Configuration - Master & worker nodes
 
