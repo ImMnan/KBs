@@ -100,7 +100,7 @@ sudo swapoff -a
 3. Initialize Kubernetes:
 
     ```   
-    sudo kubeadm init --pod-network-cidr 192.168.0.0/16 --ignore-preflight-errors all 2>& 1 | tee kubeadm-init.log
+    sudo kubeadm init | tee kubeadm-init.log
     ```
 
 4. Check the static pods that have been created for the Control Plane:
