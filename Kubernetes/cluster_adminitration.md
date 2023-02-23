@@ -111,7 +111,7 @@ Create a new file with Node info,
 vi nodereg.json 
 ```
 
-```
+```json
 {
   "kind": "Node",
   "apiVersion": "v1",
