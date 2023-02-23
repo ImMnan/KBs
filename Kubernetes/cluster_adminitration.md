@@ -51,11 +51,6 @@ To switch the context or the cluster:
 kubectl config use-context kubernetes-admin@kubernetes
 ```
 
-Get the cluster-info:
-```
-kubectl cluster-info
-```
-
 ## Kubernetes API
 
 Proxy port 8080
@@ -167,7 +162,7 @@ sudo snap install etcd
 sudo apt install etcd-client
 sudo chmod a+rw -R /etc/kubernetes/pki
 sudo ETCDCTL_API=3 etcdctl snapshot save etcd_backup.db \
---endpoints https://172.31.49.128:2379 \
+--endpoints https://<cluster-ip>:2379 \
 --cert=/etc/kubernetes/pki/etcd/server.crt \
 --key=/etc/kubernetes/pki/etcd/server.key \
 --cacert=/etc/kubernetes/pki/etcd/ca.crt
