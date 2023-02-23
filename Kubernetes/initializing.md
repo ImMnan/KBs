@@ -1,5 +1,7 @@
 # Starting with Kubernetes
 
+[Kubernetes Cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
+
 ## How to install Kubernetes
 
 1. Kubernetes [documentation](https://kubernetes.io/docs/home/)

@@ -1,5 +1,7 @@
 # Cluster Administration	
 
+[Kubernetes Cheat sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
+
 - Verify Cluster setup	
 - Kubernetes API
 - Deep-dive into Master setup
@@ -16,7 +18,43 @@
 kubectl get nodes 
 kubectl config view
 ```
+The config view will show the current-context of the cluster, users etc. example:
+```yaml
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://172.31.9.25:6443
+  name: kubernetes
+contexts:
+- context:
+    cluster: kubernetes
+    user: kubernetes-admin
+  name: kubernetes-admin@kubernetes
+current-context: kubernetes-admin@kubernetes
+kind: Config
+preferences: {}
+users:
+- name: kubernetes-admin
+  user:
+    client-certificate-data: REDACTED
+    client-key-data: REDACTED
+```
 
+To know more:
+```
+kubectl config --help
+```
+
+To switch the context or the cluster:
+```
+kubectl config use-context kubernetes-admin@kubernetes
+```
+
+Get the cluster-info:
+```
+kubectl cluster-info
+```
 
 ## Kubernetes API
 
@@ -44,8 +82,14 @@ kubectl get namespaces
 kubectl get pods -A
 kubectl get pods -n kube-system
 ```
-- Look into /etc/kubernetes/ - Config, manifests & pki
+- Look into /etc/kubernetes/ - Config, manifests & pki/certs
 
+For example to look for manifests file, any changes to manifests will take effect immediately.
+```
+ls /etc/kubernetes/manifests/
+```
+
+- Get a detailed list of the specified resources in a namespace - 
 ```
 kubectl get pods -n kube-system -o wide | grep proxy
 service kubelet status
