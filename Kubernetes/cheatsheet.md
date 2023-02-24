@@ -170,6 +170,7 @@ kubectl get nodes -o yaml                    # Prints out the yaml manifests inc
 ```bash
 kubectl get pods                             # List all pods in the default namespace
 kubectl get pods -o wide                     # List the pods in a wide view
+kubectl get pod [pod-name] -o yaml           # Get a pod's YAML
 ```
 
 ```bash
