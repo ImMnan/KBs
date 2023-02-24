@@ -192,6 +192,7 @@ ETCDCTL_API=3 etcdctl --write-out=table snapshot restore etcd_backup.db \
 ```
 
 ## Upgrading Kubernetes Cluster
+[See Kubernetes Release details](https://kubernetes.io/releases/)
 
 > Verifying the current version of Kubernetes
 
@@ -207,8 +208,7 @@ sudo apt upgrade
 ```
 If using a RedHat based system, with dnf manager:
 ```
-sudo dnf update
-sudo dnf upgrade
+sudo dnf up
 ```
 
 > Holding the Kubernetes versions
