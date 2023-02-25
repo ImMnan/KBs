@@ -189,18 +189,21 @@ kubectl set env pods <pod_name> --list        # List the environment variables d
 
 Note: below commands are for default namespace, please specify your namespace as required (see further filtering).
 ```bash
-kubectl exec <pod_name> -- <command>                 # run a command on a container - pod with single container
-kubectl exec <pod_name> -c <container> -- <command>  # run a command on a specific container - pod with multi-container
-kubectl edit pod <pod_name>                          # Edit the existing pod's yaml
-kubectl cp /tmp/foo_dir <pod_name>:/tmp/bar_dir      # Copy /tmp/foo_dir local directory to /tmp/bar_dir in a remote pod in the default namespace
-kubectl cp <namespace>/<pod_name>:/tmp/foo /tmp/bar  #Copy /tmp/foo from a remote pod to /tmp/bar locally
-kubectl set image pod/<pod_name> nginx=nginx:latest  # Update existing container image of a pod, nginx is a container-name, followed by image:version
-kubectl set image pod/<pod_name> *=nginx:latest      # Update all containers of this pod, nginx is a container-name, followed by image:version
-kubectl set resources pods <pod_name> -c=<container> --limits=cpu=200m,memory=512Mi  #Set a <container> cpu limits to "200m" and memory to "512Mi" in pod <pod_name>
+kubectl exec <pod_name> -- <command>                     # run a command on a container - pod with single container
+kubectl exec <pod_name> -c <container> -- <command>      # run a command on a specific container - pod with multi-container
+kubectl edit pod <pod_name>                              # Edit the existing pod's yaml
+kubectl label pod <pod_name> <key1>=<value1>             # Update pod <pod_name> with the label.
+kubectl label --overwrite pod <pod_name> <key1>=<value2> # Update pod <pod_name> with the label, overwriting any existing value
+kubectl label pods --all <key1>=<value1>                 # Update all pods in the namespace
+kubectl cp /tmp/foo_dir <pod_name>:/tmp/bar_dir          # Copy /tmp/foo_dir local directory to /tmp/bar_dir in a remote pod in the default namespace
+kubectl cp <namespace>/<pod_name>:/tmp/foo /tmp/bar      # Copy /tmp/foo from a remote pod to /tmp/bar locally
+kubectl set image pod/<pod_name> nginx=nginx:latest      # Update existing container image of a pod, nginx is a container-name, followed by image:version
+kubectl set image pod/<pod_name> *=nginx:latest          # Update all containers of this pod, nginx is a container-name, followed by image:version
 ```
 -  Delete:
 ```bash
 kubectl delete pod <pod_name>
+kubectl label pod <pod_name> <key1>-                     # Update pod <pod_name> by removing a label named <key1> if it exists.
 ```
 
 > Further fitering options [ -A, -n, -l ] with examples:
