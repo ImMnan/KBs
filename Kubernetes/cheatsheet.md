@@ -228,7 +228,7 @@ kubectl get deploy <deploy_name> -o yaml        # Get a deployment's YAML
 kubectl describe deploy <deploy_name>           # Describe the deployment details
 kubectl get deploy --show-labels                # Show all labels associated with the deployment
 kubectl get deploy -w                           # watch the all deployments, we can watch a specific deployment  with adding deployment name after 'deploy'
-
+```
 
 
 
