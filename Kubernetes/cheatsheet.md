@@ -164,16 +164,56 @@ kubectl get nodes                            # List all nodes in the cluster
 kubectl get nodes -w                         # Watch the nodes
 kubectl get nodes -o wide                    # wide view along with the IP(internal/external), OS-image, Kernerl, Container-runtime
 kubectl get nodes -o yaml                    # Prints out the yaml manifests including detailed node information
+kubectl get nodes --show-labels              # Show all labels associated with the nodes
+kubectl top nodes <node_name>                # The top-node command allows you to see the resource consumption of nodes.
 ```
 
-### Pods - Resource type
+### Pods - Resource type [CRUD]
+- Read:
 ```bash
-kubectl get pods                             # List all pods in the default namespace
-kubectl get pods -o wide                     # List the pods in a wide view
-kubectl get pod [pod-name] -o yaml           # Get a pod's YAML
+kubectl get pods                              # List all pods in the default namespace
+kubectl get pods -o wide                      # List the pods in a wide view - [IP, Node, Nominated Node, etc.]
+kubectl get pod <pod_name> -o yaml            # Get a pod's YAML
+kubectl describe pod <pod_name>               # Describe the pod details
+kubectl get pods --show-labels                # Show all labels associated with the pod
+kubectl get pods -w                           # watch the all  pods, we can watch a specific pod with adding pod_name after 'pods'
+kubectl logs <pod_name>                       # Return snapshot logs from pod <pod_name> with only one container
+kubectl logs <pod_name> --all-container=true  # Return snapshot logs from pod <pod_name> with multi-container
+kubectl logs -c <container> <pod_name>        # Return snapshot logs for <container> in the pod <pod_name>
+kubectl logs -f <pod_name>                    # Begin streaming the logs, use -f with other commands as well when straming is needed.
+kubectl top pods <pod_name>                   # The top command allows you to see the resource [cpu/memory] consumption.
+kubectl set env pods --all --list             # List the environment variables defined on all pods
+kubectl set env pods <pod_name> --list        # List the environment variables defined on a specific pod
+```
+- Create + Update:
+
+Note: below commands are for default namespace, please specify your namespace as required (see further filtering).
+```bash
+kubectl exec <pod_name> -- <command>                 # run a command on a container - pod with single container
+kubectl exec <pod_name> -c <container> -- <command>  # run a command on a specific container - pod with multi-container
+kubectl edit pod <pod_name>                          # Edit the existing pod's yaml
+kubectl cp /tmp/foo_dir <pod_name>:/tmp/bar_dir      # Copy /tmp/foo_dir local directory to /tmp/bar_dir in a remote pod in the default namespace
+kubectl cp <namespace>/<pod_name>:/tmp/foo /tmp/bar  #Copy /tmp/foo from a remote pod to /tmp/bar locally
+kubectl set image pod/<pod_name> nginx=nginx:latest  # Update existing container image of a pod, nginx is a container-name, followed by image:version
+kubectl set image pod/<pod_name> *=nginx:latest      # Update all containers of this pod, nginx is a container-name, followed by image:version
+kubectl set resources pods <pod_name> -c=<container> --limits=cpu=200m,memory=512Mi  #Set a <container> cpu limits to "200m" and memory to "512Mi" in pod <pod_name>
+```
+-  Delete:
+```bash
+kubectl delete pod <pod_name>
 ```
 
+> Further fitering options [ -A, -n, -l ] with examples:
+
+These options can be used with the above commands as and when required.
 ```bash
+kubectl get pods -A                     # Lister pods across all namespaces.
+kubectl get pods -n <namespace>         # Using namespace, we can use -n with all other commands to point to resources in a specific namespace.
+kubectl get pods -l <key1>=<value1>     # Using labels key1=value1 are the labels,  Matching objects must satisfy all of the specified label constraints
+kubectl logs <pod_name> --tail=-1:      # Tail the log lines of recent log file to display.
+```
+
+```
 # Get commands with basic output
 kubectl get services                          # List all services in the namespace
 kubectl get pods --all-namespaces             # List all pods in all namespaces
