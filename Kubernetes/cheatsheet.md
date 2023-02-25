@@ -154,8 +154,9 @@ data:
 EOF
 
 ```
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## Viewing and finding resources
+## Viewing/listing/updating and deleting  resources [CRUD]
 
 ### Node - Resource type
 
@@ -200,10 +201,11 @@ kubectl cp <namespace>/<pod_name>:/tmp/foo /tmp/bar      # Copy /tmp/foo from a 
 kubectl set image pod/<pod_name> nginx=nginx:latest      # Update existing container image of a pod, nginx is a container-name, followed by image:version
 kubectl set image pod/<pod_name> *=nginx:latest          # Update all containers of this pod, nginx is a container-name, followed by image:version
 ```
+
 -  Delete:
 ```bash
-kubectl delete pod <pod_name>
-kubectl label pod <pod_name> <key1>-                     # Update pod <pod_name> by removing a label named <key1> if it exists.
+kubectl delete pod <pod_name>               # Deletes the pod
+kubectl label pod <pod_name> <key1>-        # Remove a label named <key1> if it exists. *No overwrite option needed.
 ```
 
 > Further fitering options [ -A, -n, -l ] with examples:
@@ -216,6 +218,27 @@ kubectl get pods -l <key1>=<value1>     # Using labels key1=value1 are the label
 kubectl logs <pod_name> --tail=-1:      # Tail the log lines of recent log file to display.
 ```
 
+### Deployment - Resource type [CRUD]
+
+- Read:
+```bash
+kubectl get deploy                              # List all deployment  in the default namespace
+kubectl get deploy -o wide                      # List the deployment in a wide view - [Containers, Images, Selector]
+kubectl get deploy <deploy_name> -o yaml        # Get a deployment's YAML
+kubectl describe deploy <deploy_name>           # Describe the deployment details
+kubectl get deploy --show-labels                # Show all labels associated with the deployment
+kubectl get deploy -w                           # watch the all deployments, we can watch a specific deployment  with adding deployment name after 'deploy'
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
 ```
 # Get commands with basic output
 kubectl get services                          # List all services in the namespace
